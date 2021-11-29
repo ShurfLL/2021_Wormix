@@ -6,7 +6,6 @@ H = 660
 
 sc = pg.display.set_mode((W, H))
 sc.fill((100, 150, 200))
-surf1 = pg.image.load('worms_left.png')
 
 def draw_surface(name):
     surf = pg.image.load(name)
