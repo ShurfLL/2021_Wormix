@@ -4,7 +4,7 @@ import pygame
 
 
 class Player():
-	def __init__():
+	def __init__(self):
 		self.name = ""
 		self.health = 500
 		self.x = 0
@@ -21,7 +21,7 @@ class Player():
 
 
 class AbstractWeapon():
-    def __init__():
+    def __init__(self):
         self.name = ""
         self.caption = ""
         self.an = 0
@@ -31,7 +31,7 @@ class AbstractWeapon():
 
 
 class AbstractBullet():
-	def __init__():
+	def __init__(self):
 		self.name = ""
 		self.an = 0
 		self.x = 0
@@ -42,3 +42,12 @@ class AbstractBullet():
 		self.ay = 0
 		self.orientation
 		self.sprite
+
+
+class bazooka(AbstractWeapon):
+	def __init__(self):
+		super().__init__()
+		self.name = "Bazooka"
+		self.caption = "Boom-Boom"
+		self.sprite = 'models/bazooka.png'
+
