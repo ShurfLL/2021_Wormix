@@ -14,7 +14,7 @@ class Player():
 		self.vy = 0
 		self.ax = 0
 		self.ay = 0
-		self.orientation
+		self.orientation = None
 		self.sprite = 'models/cat'
 		self.weapon = None
 
