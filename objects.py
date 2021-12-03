@@ -14,9 +14,9 @@ class Player():
 		self.vy = 0
 		self.ax = 0
 		self.ay = 0
-		self.orientation
+		self.orientation = None
 		self.sprite = 'models/cat'
-		self.weapon
+		self.weapon = None
 
 
 
@@ -25,9 +25,9 @@ class AbstractWeapon():
         self.name = ""
         self.caption = ""
         self.an = 0
-        self.bullet
-        self.orientation
-        self.sprite
+        self.bullet = None
+        self.orientation = None
+        self.sprite = None
 
 
 class AbstractBullet():
@@ -40,14 +40,26 @@ class AbstractBullet():
 		self.vy = 0
 		self.ax = 0
 		self.ay = 0
-		self.orientation
-		self.sprite
+		self.orientation = None
+		self.sprite = None
 
 
-class bazooka(AbstractWeapon):
+class Rocket(AbstractBullet):
 	def __init__(self):
 		super().__init__()
-		self.name = "Bazooka"
-		self.caption = "Boom-Boom"
-		self.sprite = 'models/bazooka.png'
+		self.name = "Rocket"
+		self.sprite = 'models/rocket.png'
+
+
+
+
+class Bazooka(AbstractWeapon):
+    rocket = Rocket()
+    def __init__(self):
+        super().__init__()
+        self.name = "Bazooka"
+        self.caption = "Boom-Boom"
+        self.sprite = 'models/bazooka.png'
+        self.bullet = rocket
+
 
