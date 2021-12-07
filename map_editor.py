@@ -32,7 +32,7 @@ def map_collision(obj, borders):
 
 
 def remove_part_of_map(x, y, r, borders, image_mass):
-	b_x, b_y = np.shape(borders)[1]-1, np.shape(borders)[0]-1
+	b_x, b_y = np.shape(borders)[1], np.shape(borders)[0]
 	print(b_x, b_y)
 	for i in range(max(0,x-r),min(x+r, b_x)):
 		for j in range(max(0,y-r),min(y+r, b_y)):
@@ -44,5 +44,5 @@ def remove_part_of_map(x, y, r, borders, image_mass):
 
 image_mass = image_to_mass('maps/map1.jpg')
 borders=detect_borders(image_mass)
-remove_part_of_map(700,300,100,borders,image_mass)
-mass_to_txt(image_mass, 'maps/map.txt')
+#remove_part_of_map(1300,600,1000,borders,image_mass)
+#mass_to_txt(image_mass, 'maps/map.txt')

@@ -1,6 +1,7 @@
 import pygame
 import sys
 from os import path
+from map_editor import *
 
 W = 1400
 H = 660
@@ -80,11 +81,22 @@ def show_boom():
     all_sprites.draw(sc)
     pygame.display.update()
 
+
+def draw_map(image_mass):
+    m_x, m_y = np.shape(image_mass)[1], np.shape(image_mass)[0]
+    print(m_x, m_y)
+    for i in range(0,m_x):
+        for j in range(0,m_y):
+            pygame.draw.circle(sc, image_mass[j][i],(i,j),1)
+
 create_boom(40, 400)
+remove_part_of_map(700,300,200,borders,image_mass)
 
 
 while 1:
-    draw_surface('maps/3flour22.jpg')
+    #draw_surface('maps/3flour22.jpg')
+    #image_mass = image_to_mass('maps/map1.jpg')
+    draw_map(image_mass)
     draw_left_worm(300, 580)
     show_boom()
     for i in pygame.event.get():
