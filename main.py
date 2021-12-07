@@ -7,21 +7,24 @@ from vis import *
 
 
 cat = Player()
+cat.x=400
+cat.y = 50
 objects=[cat]
 map_image = pilImageToSurface(image_mass)
-print(type(map_image))
-dt = 1
+dt = 0.5
 
 clock = pygame.time.Clock()
 finished = False
 while not finished:
     clock.tick(FPS)
     draw_map(map_image)
-    recalculate_objects_positions(objects, dt)
-    draw_object(cat)
-    pygame.display.update()
+    cat.check_for_ground(borders)
+    cat.falling(borders)
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             finished = True
-        cat.move(event)
+        cat.move(event, borders)
+    draw_object(cat)
+    recalculate_objects_positions(objects, dt)
+    pygame.display.update()
 pygame.quit()

@@ -65,9 +65,9 @@ def pilImageToSurface(image_mass):
 
 def draw_object(obj):
     surf=pygame.image.load(obj.sprite)
-    surf=pygame.transform.scale(surf, (obj.r, obj.r))
+    surf=pygame.transform.scale(surf, (2*obj.r, 2*obj.r))
     surf.set_colorkey((255, 255, 255))
-    sc.blit(surf, (obj.x, obj.y))
+    sc.blit(surf, (obj.x-obj.r, obj.y-obj.r))
 
 
 def draw_surface(name):

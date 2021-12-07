@@ -7,9 +7,9 @@ def image_to_mass(path):
 	return np.array(img)
 
 
-def detect_borders(mass):
+def detect_void(mass):
     a = mass.sum(axis=2)
-    return a < 15
+    return a < 30
 
 
 def mass_to_txt(mass, path):
@@ -26,7 +26,7 @@ def map_collision(obj, borders):
 	b_x, b_y = np.shape(borders)[1]-1, np.shape(borders)[0]-1
 	for i in range(max(obj.x-obj.r, 0),min(obj.x+obj.r, b_x)):
 		for j in range(max(obj.y-obj.r, 0),min(obj.y+obj.r, b_y)):
-			if((i-obj.x)**2+(j-obj.y)**2<=obj.r**2 and borders[j][i]==True):
+			if((i-obj.x)**2+(j-obj.y)**2<=obj.r**2 and borders[j][i]==False):
 				collision=True
 	return collision
 
@@ -43,6 +43,6 @@ def remove_part_of_map(x, y, r, borders, image_mass):
 
 
 image_mass = image_to_mass('maps/map1.jpg')
-borders=detect_borders(image_mass)
+borders=detect_void(image_mass)
 #remove_part_of_map(1300,600,1000,borders,image_mass)
 #mass_to_txt(image_mass, 'maps/map.txt')
