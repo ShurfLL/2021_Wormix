@@ -5,10 +5,11 @@ g = 10  #Ускорение свободного падения
 wind_force = 50
 
 
-def move_objects (body, dt):
+def move_objects(body, dt):
     """
     Перемещает тело
     """
+
 
     ax = wind_force / body.m
     body.x += ( body.Vx * dt + ax * dt**2 )
@@ -25,7 +26,7 @@ def recalculate_objects_positions(objects, dt):
     """
 
     for body in objects:
-        move_objects (body, dt)
+        move_objects(body, dt)
 
 
 if __name__ == "__main__":
