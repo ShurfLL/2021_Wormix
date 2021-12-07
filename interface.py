@@ -1,5 +1,5 @@
 import pygame
-from objects import bazooka
+from objects import Bazooka
 
 FPS = 30
 WIDTH = 800

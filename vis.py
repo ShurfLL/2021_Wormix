@@ -13,11 +13,13 @@ GREEN = (0, 255, 0)
 BLUE = (0, 0, 255)
 YELLOW = (255, 255, 0)
 
+pygame.init()
 img_dir = path.join(path.dirname(__file__), 'img')
 sc = pygame.display.set_mode((W, H))
 sc.fill((100, 150, 200))
 
 FPS = 60
+
 
 class Explosion(pygame.sprite.Sprite):
     def __init__(self, center, size):
@@ -55,6 +57,19 @@ for i in range(9):
     explosion_anim['lg'].append(img_lg)
 
 
+def pilImageToSurface(image_mass):
+    pilImage = Image.fromarray(image_mass)
+    return pygame.image.fromstring(
+        pilImage.tobytes(), pilImage.size, pilImage.mode)
+
+
+def draw_object(obj):
+    surf=pygame.image.load(obj.sprite)
+    surf=pygame.transform.scale(surf, (obj.r, obj.r))
+    surf.set_colorkey((255, 255, 255))
+    sc.blit(surf, (obj.x, obj.y))
+
+
 def draw_surface(name):
     surf = pygame.image.load(name)
     rect = surf.get_rect(bottomright=(W, H))
@@ -82,25 +97,5 @@ def show_boom():
     pygame.display.update()
 
 
-def draw_map(image_mass):
-    m_x, m_y = np.shape(image_mass)[1], np.shape(image_mass)[0]
-    print(m_x, m_y)
-    for i in range(0,m_x):
-        for j in range(0,m_y):
-            pygame.draw.circle(sc, image_mass[j][i],(i,j),1)
-
-create_boom(40, 400)
-remove_part_of_map(700,300,200,borders,image_mass)
-
-
-while 1:
-    #draw_surface('maps/3flour22.jpg')
-    #image_mass = image_to_mass('maps/map1.jpg')
-    draw_map(image_mass)
-    draw_left_worm(300, 580)
-    show_boom()
-    for i in pygame.event.get():
-        if i.type == pygame.QUIT:
-            sys.exit()
-
-    pygame.time.delay(200)
+def draw_map(image):
+    sc.blit(image, (0, 0))
