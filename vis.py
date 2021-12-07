@@ -47,7 +47,7 @@ explosion_anim = {}
 explosion_anim['lg'] = []
 
 for i in range(9):
-    filename = 'regularExplosion0{}.png'.format(i)
+    filename = 'models/regularExplosion0{}.png'.format(i)
     img = pygame.image.load(filename)
     img.set_colorkey(BLACK)
     img_lg = pygame.transform.scale(img, (75, 75))
@@ -62,7 +62,7 @@ def draw_surface(name):
 
 
 def draw_left_worm(x, y):
-    surf1 = pygame.image.load('worms_left.png')
+    surf1 = pygame.image.load('models/worms_left.png')
     new_worm = pygame.transform.scale(surf1, (60, 60))
     new_worm.set_colorkey((255, 255, 255))
     sc.blit(new_worm, (x, y))
@@ -84,7 +84,7 @@ create_boom(40, 400)
 
 
 while 1:
-    draw_surface('3flour22.jpg')
+    draw_surface('maps/3flour22.jpg')
     draw_left_worm(300, 580)
     show_boom()
     for i in pygame.event.get():
