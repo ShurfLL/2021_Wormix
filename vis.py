@@ -47,7 +47,7 @@ explosion_anim = {}
 explosion_anim['lg'] = []
 
 for i in range(9):
-    filename = 'regularExplosion0{}.png'.format(i)
+    filename = 'models/regularExplosion0{}.png'.format(i)
     img = pygame.image.load(filename)
     img.set_colorkey(BLACK)
     img_lg = pygame.transform.scale(img, (75, 75))
