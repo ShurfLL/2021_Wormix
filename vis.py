@@ -68,7 +68,13 @@ def draw_object(obj):
     surf=pygame.transform.scale(surf, (2*obj.r, 2*obj.r))
     surf.set_colorkey((255, 255, 255))
     sc.blit(surf, (obj.x-obj.r, obj.y-obj.r))
-
+    
+ def spin_object(obj, angle):
+    surf = pygame.image.load(obj.sprite)
+    surf = pygame.transform.scale(surf, (2 * obj.r, 2 * obj.r))
+    surf_rotated = pygame.transform.rotate(surf, angle)
+    surf_rotated.set_colorkey((255, 255, 255))
+    sc.blit(surf_rotated, (obj.x-obj.r, obj.y-obj.r))
 
 def draw_surface(name):
     surf = pygame.image.load(name)
