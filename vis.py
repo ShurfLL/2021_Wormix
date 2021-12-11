@@ -66,16 +66,11 @@ def pilImageToSurface(image_mass):
 def draw_object(obj):
     surf=pygame.image.load(obj.sprite)
     surf=pygame.transform.scale(surf, (2*obj.r, 2*obj.r))
+    surf=pygame.transform.rotate(surf, obj.angle)
     surf.set_colorkey((255, 255, 255))
     sc.blit(surf, (obj.x-obj.r, obj.y-obj.r))
-    
- def spin_object(obj, angle):
-    surf = pygame.image.load(obj.sprite)
-    surf = pygame.transform.scale(surf, (2 * obj.r, 2 * obj.r))
-    surf_rotated = pygame.transform.rotate(surf, angle)
-    surf_rotated.set_colorkey((255, 255, 255))
-    sc.blit(surf_rotated, (obj.x-obj.r, obj.y-obj.r))
 
+    
 def draw_surface(name):
     surf = pygame.image.load(name)
     rect = surf.get_rect(bottomright=(W, H))
@@ -90,12 +85,14 @@ def draw_left_worm(x, y):
     sc.blit(new_worm, (x, y))
     pygame.display.update()
 
+    
 def create_boom(x,y):
     global all_sprites
     expl = Explosion((x, y), 'lg')
     all_sprites = pygame.sprite.Group()
     all_sprites.add(expl)
 
+    
 def show_boom():
     global all_sprites
     all_sprites.update()
