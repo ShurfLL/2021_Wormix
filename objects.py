@@ -20,7 +20,7 @@ class Player():
         self.ay = 0
         self.r = 20
         self.on_ground = False
-        self.orientation = None
+        self.left_orientation = True
         self.sprite = 'models/cat.png'
         self.weapon = None
 
@@ -31,8 +31,12 @@ class Player():
         elif event.type == pygame.KEYDOWN:
             if event.key == pygame.K_LEFT:
                 self.vx = -5
+                self.y -= 5
+                self.left_orientation = False
             if event.key == pygame.K_RIGHT:
                 self.vx = 5
+                self.y -= 5
+                self.left_orientation = True
             if event.key == pygame.K_UP:
                 self.vy = -10
             if event.key == pygame.K_DOWN:
