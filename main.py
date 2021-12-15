@@ -8,7 +8,7 @@ from vis import *
 paused, playing, settings = False, False, False
 cat = Player()
 inv = Inventory(sc, [cat.weapon])
-cat.x=400
+cat.x=450
 cat.y = 50
 objects=[cat]
 map_image = pilImageToSurface(image_mass)
@@ -19,7 +19,8 @@ finished = False
 while not finished:
     clock.tick(FPS)
     
-    
+    events = pygame.event.get()
+
     if not playing and not paused:
         state = MainMenu(sc)
         if state[1]:
@@ -46,13 +47,15 @@ while not finished:
             paused = True
         inv.display()
         cat.check_for_ground(borders)
-        cat.falling(borders)
-        for event in pygame.event.get():
+        for event in events:
             if event.type == pygame.QUIT:
                 finished = True
-            cat.move(event, borders)
+            if event.type == pygame.KEYDOWN or event.type == pygame.KEYUP:
+                cat.get_move(event)
+        cat.move(borders)
+        move_object(cat, dt, borders)
         draw_object(cat)
-        recalculate_objects_positions(objects, dt)
+
         
     if paused:
         pause_menu = PauseMenu(sc)
@@ -66,8 +69,8 @@ while not finished:
             playing = False
             paused = False
             
-                
-    for event in pygame.event.get():
+    
+    for event in events:
         if event.type == pygame.QUIT:
             finished = True
     pygame.display.update()

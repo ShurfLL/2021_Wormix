@@ -9,7 +9,7 @@ def image_to_mass(path):
 
 def detect_void(mass):
     a = mass.sum(axis=2)
-    return a < 30
+    return a < 100
 
 
 def mass_to_txt(mass, path):
@@ -39,6 +39,16 @@ def remove_part_of_map(x, y, r, borders, image_mass):
 			if((i-x)**2+(j-y)**2<=r**2):
 				borders[j][i]=False
 				image_mass[j][i] = [0, 0, 0]
+
+
+def check_traj(obj, dx, dy, borders):
+	ret=False
+	obj.x += dx
+	obj.y += dy
+	ret = map_collision(obj, borders)
+	obj.x -= dx
+	obj.y -= dy
+	return ret
 
 
 
