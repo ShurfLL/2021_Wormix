@@ -62,6 +62,7 @@ for i in range(9):
     img_lg = pygame.transform.scale(img, (75, 75))
     explosion_anim['lg'].append(img_lg)
 
+all_sprites = pygame.sprite.Group()
 
 def pilImageToSurface(image_mass):
     pilImage = Image.fromarray(image_mass)
