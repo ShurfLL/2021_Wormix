@@ -21,6 +21,9 @@ start = pygame.mixer.Sound('music/while_playing.mp3')
 start.play(-1)
 
 fighting = pygame.mixer.Sound("music/fighting.mp3")
+fighting.set_volume(0.2)
+
+walk = pygame.mixer.Sound("music/walk-compress.mp3")
 
 clock = pygame.time.Clock()
 finished = False
@@ -64,6 +67,7 @@ while not finished:
                 finished = True
             if event.type == pygame.KEYDOWN or event.type == pygame.KEYUP:
                 cat.get_move(event)
+                walk.play(0)
         cat.move(borders)
         move_object(cat, dt, borders)
         draw_object(cat)
