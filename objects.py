@@ -90,6 +90,9 @@ class AbstractWeapon():
         self.name = ""
         self.caption = ""
         self.an = 0
+        self.x = 0
+        self.y = 0
+        self.r = 10
         self.bullet = None
         self.orientation = None
         self.sprite = None
@@ -105,6 +108,7 @@ class AbstractBullet():
         self.vy = 0
         self.ax = 0
         self.ay = 0
+        self.r = 5
         self.orientation = None
         self.sprite = None
 
@@ -113,7 +117,10 @@ class Rocket(AbstractBullet):
     def __init__(self):
         super().__init__()
         self.name = "Rocket"
-        self.sprite = 'models/rocket.png'
+        self.an = 0
+        self.orientation = "right"
+        self.sprite = 'models/Rocket.png'
+
 
 
 
@@ -123,10 +130,32 @@ class Bazooka(AbstractWeapon):
     def __init__(self):
         super().__init__()
         self.name = "Bazooka"
+        self.orientation = "left"
         self.caption = "Boom-Boom"
-        self.sprite = 'models/bazooka.png'
+        self.bullet = "Rocket"
+        self.sprite = 'models/Bazooka.png'
         self.bullet = rocket
 
+
+class UziBullet(AbstractBullet):
+    def __init__(self):
+        super().__init__()
+        self.name = "UziBullet"
+        self.an = 0
+        self.orientation = "right"
+        self.sprite = 'models/UziBullet.png'
+
+
+class Uzi(AbstractWeapon):
+    uzibullet = UziBullet()
+    def __init__(self):
+        super().__init__()
+        self.name = "Uzi"
+        self.orientation = "left"
+        self.caption = "Boom-Boom"
+        self.bullet = "UziBullet"
+        self.sprite = 'models/Uzi.png'
+        self.bullet = uzibullet
 
 """        if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_LEFT:
