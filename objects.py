@@ -90,12 +90,35 @@ class AbstractWeapon():
         self.name = ""
         self.caption = ""
         self.an = 0
+        self.f_power = 0
+        self.fire_on = False
         self.x = 0
         self.y = 0
         self.r = 10
         self.bullet = None
         self.orientation = None
         self.sprite = None
+
+    def targetting(self, event):
+        if event.type == KEYDOWN:
+            if event.key == pygame.K_UP and self.an < 90:
+                self.an += 5
+            if event.key == pygame.K_DOWN and self.an > 0:
+                self.an -= 5
+
+    def fire_start(self):
+        self.fire_on = True
+
+    def power_up(self):
+        if self.fire_on:
+            if self.f_power < 30:
+                self.f_power += 1
+
+    def fire_end(self):
+        self.bullet.vx = self.f_power*math.cos(self.an)
+        self.bullet.vy = -self.f_power*math.sin(self.an)
+        self.fire_on = False
+        return self.bullet
 
 
 class AbstractBullet():
@@ -109,8 +132,15 @@ class AbstractBullet():
         self.ax = 0
         self.ay = 0
         self.r = 5
+        self.fire_force = 0
+        self.active = True
         self.orientation = None
         self.sprite = None
+
+    def bullet_collision(self, borders, image_mass):
+        if map_collision(self, borders):
+            self.active = False
+            remove_part_of_map(self.x, self.y, self.fire_force, borders, image_mass)
 
 
 class Rocket(AbstractBullet):
@@ -120,8 +150,6 @@ class Rocket(AbstractBullet):
         self.an = 0
         self.orientation = "right"
         self.sprite = 'models/Rocket.png'
-
-
 
 
 
@@ -135,6 +163,8 @@ class Bazooka(AbstractWeapon):
         self.bullet = "Rocket"
         self.sprite = 'models/Bazooka.png'
         self.bullet = rocket
+
+
 
 
 class UziBullet(AbstractBullet):
