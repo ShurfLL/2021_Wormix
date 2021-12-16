@@ -148,6 +148,7 @@ class Rocket(AbstractBullet):
         super().__init__()
         self.name = "Rocket"
         self.an = 0
+        self.active = True
         self.orientation = "right"
         self.sprite = 'models/Rocket.png'
 
@@ -172,6 +173,7 @@ class UziBullet(AbstractBullet):
         super().__init__()
         self.name = "UziBullet"
         self.an = 0
+        self.active = True
         self.orientation = "right"
         self.sprite = 'models/UziBullet.png'
 
