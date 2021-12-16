@@ -3,10 +3,19 @@ import random
 import pygame
 import numpy as np
 from physics import calculate_accelerations
-from map_editor import map_collision, check_traj
+from map_editor import map_collision, check_traj, remove_part_of_map
 
+def objects_collision(obj1, obj2):
+    dist = int(math.sqrt((obj1.x - obj2.x) ** 2 + (obj1.y - obj2.y) ** 2))
+    if obj1.r + obj2.r <= dist:
+        return True
+    else:
+        return False
 
 class Player():
+    bazooka = Bazooka()
+    uzi = Uzi()
+    available_weapons = dict("bazooka" = bazooka, "uzi" = uzi)        #Доступные оружия для игрока
     def __init__(self):
         self.name = ""
         self.health = 500
@@ -81,8 +90,8 @@ class Player():
             if not borders[self.y+self.r+3][i]:
                 self.on_ground = True
 
-    def give_weapon(name):
-        pass
+    def give_weapon(self):
+        self.weapon = weapon_selection(available_weapons)         #Нужно создать функцию выбора оружия из словаря оружий
 
 
 class AbstractWeapon():
@@ -100,7 +109,7 @@ class AbstractWeapon():
         self.sprite = None
 
     def targetting(self, event):
-        if event.type == KEYDOWN:
+        if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_UP and self.an < 90:
                 self.an += 5
             if event.key == pygame.K_DOWN and self.an > 0:
@@ -137,10 +146,17 @@ class AbstractBullet():
         self.orientation = None
         self.sprite = None
 
-    def bullet_collision(self, borders, image_mass):
+    def bullet_collision(self, borders, image_mass, players):
         if map_collision(self, borders):
             self.active = False
             remove_part_of_map(self.x, self.y, self.fire_force, borders, image_mass)
+            for player in players:
+                dist = ( player.x - self.x ) ** 2 + ( player.y - self.y ) ** 2
+                if dist <= self.fire_force ** 2:
+                    collision_an = math.atan2((player.y - self.y), (player.x - self.x))    #Угол окидывания игрока
+                    player.health -= int( 125 - 125 * dist / self.fire_force )      #Нанесение урона игроку
+                    player.vx +=  math.cos(collision_an) * ( v_0 - v_0 * dist / self.fire_force )     #Откидывание игрока из-за взрыва
+                    player.vy +=  math.sin(collision_an) * ( v_0 - v_0 * dist / self.fire_force )
 
 
 class Rocket(AbstractBullet):
@@ -148,6 +164,7 @@ class Rocket(AbstractBullet):
         super().__init__()
         self.name = "Rocket"
         self.an = 0
+        self.fire_force = 15
         self.active = True
         self.orientation = "right"
         self.sprite = 'models/Rocket.png'
@@ -173,6 +190,7 @@ class UziBullet(AbstractBullet):
         super().__init__()
         self.name = "UziBullet"
         self.an = 0
+        self.fire_force = 4
         self.active = True
         self.orientation = "right"
         self.sprite = 'models/UziBullet.png'
