@@ -1,7 +1,7 @@
 import pygame
 from map_editor import map_collision
 
-g = 0.5  #Ускорение свободного падения
+g = 2  #Ускорение свободного падения
 
 wind_force = 0  #Сила ветра
 
@@ -28,7 +28,6 @@ def move_object(body, dt, borders):
         body.x += sign(body.vx)
         if map_collision(body, borders):
             body.vx, body.vy, body.ax, body.ay = 0, 0, 0, 0
-            body.x -= 3*sign(body.vx)
             break
 
     
@@ -37,7 +36,6 @@ def move_object(body, dt, borders):
         body.y += sign(body.vy)
         if map_collision(body, borders):
             body.vx, body.vy, body.ax, body.ay = 0, 0, 0, 0
-            body.y -= 3*sign(body.vy)
             break
     
     body.ax = 0

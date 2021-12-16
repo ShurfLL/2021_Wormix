@@ -15,6 +15,7 @@ image_mass = image_to_mass('maps/map1.jpg')
 borders=detect_void(image_mass)
 map_image = pilImageToSurface(image_mass)
 dt = 0.5
+remove_part_of_map(450, 200, 300, borders, image_mass)
 
 
 clock = pygame.time.Clock()

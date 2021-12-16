@@ -17,7 +17,7 @@ def map_collision(obj, borders):
 	b_x, b_y = np.shape(borders)[1]-1, np.shape(borders)[0]-1
 	for i in range(max(obj.x-obj.r, 0),min(obj.x+obj.r, b_x)):
 		for j in range(max(obj.y-obj.r, 0),min(obj.y+obj.r, b_y)):
-			if((i-obj.x)**2+(j-obj.y)**2<=obj.r**2 and borders[j][i]==False):
+			if((i-obj.x)**2+(j-obj.y)**2<=(obj.r-4)**2 and borders[j][i]==False):
 				collision=True
 	return collision
 
@@ -28,7 +28,7 @@ def remove_part_of_map(x, y, r, borders, image_mass):
 	for i in range(max(0,x-r),min(x+r, b_x)):
 		for j in range(max(0,y-r),min(y+r, b_y)):
 			if((i-x)**2+(j-y)**2<=r**2):
-				borders[j][i]=False
+				borders[j][i]=True
 				image_mass[j][i] = [0, 0, 0]
 
 
@@ -40,3 +40,7 @@ def check_traj(obj, dx, dy, borders):
 	obj.x -= dx
 	obj.y -= dy
 	return ret
+
+
+class Map():
+	pass
