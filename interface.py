@@ -94,7 +94,6 @@ def MainMenu(screen):
     start_button.display()
     setting_button.display()
     info_button.display()
-    pygame.display.update()
     return start_button.click(), exit_button.click(), setting_button.click(), info_button.click()
 
 def AboutMenu(screen):
@@ -110,7 +109,6 @@ def AboutMenu(screen):
     draw_text(screen, 'Shmyrkov', 30, pygame.font.get_default_font(), (0,0,0), 300, 200+2*delta)
     draw_text(screen, 'negaskolya', 30, pygame.font.get_default_font(), (0,0,0), 300, 200+3*delta)
     draw_text(screen, 'sHiNkO1975', 30, pygame.font.get_default_font(), (0,0,0), 300, 200+4*delta)
-    pygame.display.update()
 
 
 def SettingsMenu(screen):
