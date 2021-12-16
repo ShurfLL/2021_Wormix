@@ -12,15 +12,6 @@ def detect_void(mass):
     return a < 100
 
 
-def mass_to_txt(mass, path):
-	file = open(path, 'w')
-	for line in mass:
-		for element in line:
-			file.write(str(element)+' ')
-		file.write('\n')
-	file.close()
-
-
 def map_collision(obj, borders):
 	collision=False
 	b_x, b_y = np.shape(borders)[1]-1, np.shape(borders)[0]-1
@@ -49,10 +40,3 @@ def check_traj(obj, dx, dy, borders):
 	obj.x -= dx
 	obj.y -= dy
 	return ret
-
-
-
-image_mass = image_to_mass('maps/map1.jpg')
-borders=detect_void(image_mass)
-#remove_part_of_map(1300,600,1000,borders,image_mass)
-#mass_to_txt(image_mass, 'maps/map.txt')

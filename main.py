@@ -11,8 +11,11 @@ inv = Inventory(sc, [cat.weapon])
 cat.x=450
 cat.y = 50
 objects=[cat]
+image_mass = image_to_mass('maps/map1.jpg')
+borders=detect_void(image_mass)
 map_image = pilImageToSurface(image_mass)
 dt = 0.5
+
 
 clock = pygame.time.Clock()
 finished = False

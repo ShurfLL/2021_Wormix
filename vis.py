@@ -80,14 +80,6 @@ def draw_surface(name):
     pygame.display.update()
 
 
-def draw_left_worm(x, y):
-    surf1 = pygame.image.load('models/worms_left.png')
-    new_worm = pygame.transform.scale(surf1, (60, 60))
-    new_worm.set_colorkey((255, 255, 255))
-    sc.blit(new_worm, (x, y))
-    pygame.display.update()
-
-    
 def create_boom(x,y):
     global all_sprites
     expl = Explosion((x, y), 'lg')

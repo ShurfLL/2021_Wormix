@@ -31,7 +31,6 @@ class Player():
         self.weapon = None
     
     def get_move(self, event):
-
         if event.type == pygame.KEYDOWN: 
             if event.key == pygame.K_LEFT:
                 self.move_left = True
@@ -46,30 +45,12 @@ class Player():
                 self.move_left = False
             if event.key == pygame.K_RIGHT:
                 self.move_right = False
-        
-        
-        #if event.type == pygame.KEYDOWN or event.type == pygame.KEYUP:
-        """
-        if (event.type == pygame.KEYDOWN):
-            is_up = 1
-        else:
-            is_up = -1   
-        
 
-        if event.key == pygame.K_LEFT:
-            self.V_sign -= 1 * is_up
-
-        if event.key == pygame.K_RIGHT:
-            self.V_sign += 1 * is_up 
-
-
-        print(self.V_sign)
-"""
-
-    def jump(self):
-        self.vx = 3
-        self.vy = -20
-    
+    def jump(self, borders):
+        if not check_traj(self, 0, -2, borders):
+            self.y -= 2
+            self.vx = 3
+            self.vy = -20
     
     def move(self,borders):
         if self.on_ground:
@@ -84,7 +65,7 @@ class Player():
                 self.x -= self.dx
                 self.y -= self.dy
             if self.start_jump:
-                self.jump()
+                self.jump(borders)
                 self.start_jump = False
         else:
             calculate_accelerations(self)
@@ -93,13 +74,15 @@ class Player():
         if self.vy >= 10:
             self.ay = 0
 
-
     def check_for_ground(self, borders):
         self.on_ground = False
         b_x = np.shape(borders)[1]-1
         for i in range(max(self.x-self.r, 0),min(self.x+self.r, b_x)):
             if not borders[self.y+self.r+3][i]:
                 self.on_ground = True
+
+    def give_weapon(name):
+        pass
 
 
 class AbstractWeapon():
