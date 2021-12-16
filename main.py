@@ -6,6 +6,7 @@ from physics import *
 from vis import *
 
 paused, playing, settings = False, False, False
+begging_flag = False
 cat = Player()
 inv = Inventory(sc, [cat.weapon])
 cat.x=450
@@ -17,6 +18,10 @@ map_image = pilImageToSurface(image_mass)
 dt = 0.5
 remove_part_of_map(450, 200, 300, borders, image_mass)
 
+start = pygame.mixer.Sound('music/while_playing.mp3')
+start.play(-1)
+
+fighting = pygame.mixer.Sound("music/fighting.mp3")
 
 clock = pygame.time.Clock()
 finished = False
@@ -44,6 +49,10 @@ while not finished:
             
             
     if playing:       
+        start.stop()
+        if begging_flag == False:
+            fighting.play(-1)
+            begging_flag = True
         draw_map(map_image)
         pause = Button(sc, W*5/6, H/6, pygame.image.load('models/pause_btn.png').convert_alpha(), 0.15)
         pause.display()
