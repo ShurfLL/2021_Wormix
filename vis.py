@@ -26,10 +26,10 @@ class Explosion(pygame.sprite.Sprite):
     Создание "спрайта" взрыва
     '''
     def __init__(self, center, size):
-        pygame.sprite.Sprite.__init__(self)
+        pygame.sprite.Sprite.__init__(self) # инициализатор встроенных классов Sprite
         self.size = size
         self.image = explosion_anim[self.size][0] 
-        self.rect = self.image.get_rect()
+        self.rect = self.image.get_rect() # вычисление прямоугольника, который может окружить картинку
         self.rect.center = center # координаты центра взрыва
         self.frame = 0
         self.last_update = pygame.time.get_ticks()
@@ -89,11 +89,11 @@ def draw_surface(name): # рисует поверхность
 def create_boom(x,y): # вызывывает спрайт взрыва с центром в точке
     global all_sprites
     expl = Explosion((x, y), 'lg')
-    all_sprites = pygame.sprite.Group()
-    all_sprites.add(expl)
+    all_sprites = pygame.sprite.Group() # инициализация группы
+    all_sprites.add(expl) # добавление спрайта в группу
 
     
-def show_boom():
+def show_boom(): # показ спрайта на экране
     global all_sprites
     all_sprites.update()
     all_sprites.draw(sc)
