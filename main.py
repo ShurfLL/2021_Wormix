@@ -32,6 +32,7 @@ while not finished:
     clock.tick(FPS)
     
     events = pygame.event.get()
+    show_boom()
 
     if not playing and not paused:
         state = MainMenu(sc)
@@ -69,6 +70,10 @@ while not finished:
             if event.type == pygame.KEYDOWN or event.type == pygame.KEYUP:
                 cat.get_move(event)
                 walk.play(0)
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                create_boom(*event.pos)
+                pygame.display.update()
+                all_sprites.update()
         cat.move(borders)
         move_object(cat, dt, borders)
         draw_object(cat)
