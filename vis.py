@@ -22,15 +22,18 @@ FPS = 60
 
 
 class Explosion(pygame.sprite.Sprite):
+    '''
+    Создание "спрайта" взрыва
+    '''
     def __init__(self, center, size):
         pygame.sprite.Sprite.__init__(self)
         self.size = size
-        self.image = explosion_anim[self.size][0]
+        self.image = explosion_anim[self.size][0] 
         self.rect = self.image.get_rect()
-        self.rect.center = center
+        self.rect.center = center # координаты центра взрыва
         self.frame = 0
         self.last_update = pygame.time.get_ticks()
-        self.frame_rate = 10
+        self.frame_rate = 10       # скорость смены кадров
 
     def update(self):
         now = pygame.time.get_ticks()
@@ -50,6 +53,9 @@ explosion_anim = {}
 explosion_anim['lg'] = []
 
 for i in range(9):
+    '''
+    Заполнение "словаря" рисунками взрыва
+    '''
     filename = 'models/regularExplosion0{}.png'.format(i)
     img = pygame.image.load(filename)
     img.set_colorkey(BLACK)
@@ -63,7 +69,7 @@ def pilImageToSurface(image_mass):
         pilImage.tobytes(), pilImage.size, pilImage.mode)
 
 
-def draw_object(obj):
+def draw_object(obj): # рисует произвольный объект
     surf=pygame.image.load(obj.sprite)
     surf=pygame.transform.scale(surf, (2*obj.r, 2*obj.r))
     surf=pygame.transform.rotate(surf, obj.an)
@@ -73,14 +79,14 @@ def draw_object(obj):
     sc.blit(surf, (obj.x-obj.r, obj.y-obj.r))
 
     
-def draw_surface(name):
+def draw_surface(name): # рисует поверхность
     surf = pygame.image.load(name)
     rect = surf.get_rect(bottomright=(W, H))
     sc.blit(surf, rect)
     pygame.display.update()
 
 
-def create_boom(x,y):
+def create_boom(x,y): # вызывывает спрайт взрыва с центром в точке
     global all_sprites
     expl = Explosion((x, y), 'lg')
     all_sprites = pygame.sprite.Group()
