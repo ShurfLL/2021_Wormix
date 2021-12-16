@@ -79,13 +79,18 @@ while not finished:
         if pause_menu[0]:
             paused = False
         if pause_menu[1]:
+            fighting.stop()
+            start.play(-1)
             playing = False
             paused = False
+            begging_flag = False
         if pause_menu[2]:
+            fighting.stop()
+            start.play(-1)
             settings = True
             playing = False
             paused = False
-            
+            begging_flag = False
     
     for event in events:
         if event.type == pygame.QUIT:
