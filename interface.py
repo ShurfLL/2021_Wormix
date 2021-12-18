@@ -23,7 +23,7 @@ class Inventory():
         self.x, self.y = WIDTH/3, HEIGHT*5/6
     
     
-    def display(self):
+    def draw(self):
         dx = 0
         if self.inventory[0] == None:
             return
@@ -48,7 +48,7 @@ class Button:
         self.screen = screen
 
         
-    def display(self):
+    def draw(self):
         '''
         отображает кнопку на поверхности
         '''
@@ -100,8 +100,8 @@ class Slider():
         
     def draw(self):
         surf = self.surf.copy()
-        pos = (10*self.scale+int((self.start_val-self.min)/(self.max-self.min)*80*self.scale), 33*self.scale)
-        self.button_rect = self.button_surf.get_rect(center=pos)
+        new_pos = (10*self.scale+int((self.start_val-self.min)/(self.max-self.min)*80*self.scale), 33*self.scale)
+        self.button_rect = self.button_surf.get_rect(center=new_pos)
         surf.blit(self.button_surf, self.button_rect)
         self.button_rect.move_ip(self.pos[0], self.pos[1])
         self.screen.blit(surf, (self.pos[0], self.pos[1]))
@@ -117,6 +117,7 @@ class Slider():
 class MainMenu():
     def __init__(self, screen):
         self.on, self.start_game, self.quit, self.settings = True, False, False, False
+        self.info = False
         self.screen = screen
         menu_w, menu_h = screen.get_size()
         self.menu_img = pygame.transform.scale(pygame.image.load('models/main_menu.jpg').convert_alpha(),
@@ -133,10 +134,10 @@ class MainMenu():
     
     def draw(self):
         self.screen.blit(self.menu_img, (0,0))
-        self.exit_button.display()
-        self.start_button.display()
-        self.setting_button.display()
-        self.info_button.display()
+        self.exit_button.draw()
+        self.start_button.draw()
+        self.setting_button.draw()
+        self.info_button.draw()
         
     def check_events(self):
         if self.exit_button.click():
@@ -148,14 +149,20 @@ class MainMenu():
             self.on = False
             self.settings = True
         if self.info_button.click():
-            self.screen.fill((179, 218, 241))
-            self.screen.blit(self.bang_img, (0,0))
-            delta = 50
-            draw_text(self.screen, 'made by', 50, pygame.font.get_default_font(), (0,0,0), 300, 200)
-            draw_text(self.screen, 'ShurfLL', 30, pygame.font.get_default_font(), (0,0,0), 300, 200+delta)
-            draw_text(self.screen, 'Shmyrkov', 30, pygame.font.get_default_font(), (0,0,0), 300, 200+2*delta)
-            draw_text(self.screen, 'negaskolya', 30, pygame.font.get_default_font(), (0,0,0), 300, 200+3*delta)
-            draw_text(self.screen, 'sHiNkO1975', 30, pygame.font.get_default_font(), (0,0,0), 300, 200+4*delta)
+            self.info = True
+            
+    def AboutMenu(self):
+        self.screen.fill((179, 218, 241))
+        self.screen.blit(self.bang_img, (0,0))
+        delta = 50
+        draw_text(self.screen, 'made by', 50, pygame.font.get_default_font(), (0,0,0), 300, 200)
+        draw_text(self.screen, 'ShurfLL', 30, pygame.font.get_default_font(), (0,0,0), 300, 200+delta)
+        draw_text(self.screen, 'Shmyrkov', 30, pygame.font.get_default_font(), (0,0,0), 300, 200+2*delta)
+        draw_text(self.screen, 'negaskolya', 30, pygame.font.get_default_font(), (0,0,0), 300, 200+3*delta)
+        draw_text(self.screen, 'sHiNkO1975', 30, pygame.font.get_default_font(), (0,0,0), 300, 200+4*delta)
+        if not self.info_button.clicked:
+            self.info = False
+            self.on = True
 
 
 class SettingsMenu():
@@ -177,15 +184,14 @@ class SettingsMenu():
     def draw(self):
         self.screen.fill((179, 218, 241))
         draw_text(self.screen, 'Settings', 50, pygame.font.get_default_font(),
-                  (0,0,0), self.mid_w-self.offset, self.mid_h-self.offset)
-        self.close_button.display()
+                  (0,0,0), self.mid_w, self.mid_h - self.offset)
+        self.close_button.draw()
         self.volume.draw()
         
     def check_events(self):
         if self.close_button.click():
             self.on = False
         if self.volume.hit:
-            print('sup')
             self.volume.move()
     
 
@@ -194,7 +200,7 @@ class PauseMenu():
     меню паузы
     '''
     def __init__(self, screen):
-        self.close = False
+        self.on = False
         self.to_menu = False
         self.settings = False
         width, height= screen.get_size()
@@ -204,19 +210,26 @@ class PauseMenu():
         exit_img = pygame.image.load('models/back_to_menu.png').convert_alpha()
         settings_img = pygame.image.load('models/settings_btn2.png').convert_alpha()
         
+        self.button = Button(screen, width*5/6, height/6,
+                                     pygame.image.load('models/pause_btn.png').convert_alpha(), 0.15)
         self.close_button = Button(screen, dest[0] - offset, dest[1], close_img, 0.3)
         self.exit_button = Button(screen, dest[0] - 2*offset, dest[1], exit_img, 0.3)
         self.settings_button = Button(screen, dest[0] - 3*offset, dest[1], settings_img, 0.3)
     
     def draw(self):
-        self.close_button.display()
-        self.exit_button.display()
-        self.settings_button.display()
+        self.button.draw()
+        if self.on:
+            self.close_button.draw()
+            self.exit_button.draw()
+            self.settings_button.draw()
         
     def check_events(self):
-        if self.close_button.click():
-            self.close = True
-        if self.exit_button.click():
-            self.tomenu = True
-        if self.settings_button.click():
+        if self.button.click():
+            self.on = True
+        if self.close_button.click() and self.on:
+            self.on = False
+        if self.exit_button.click() and self.on:
+            self.on = False
+            self.to_menu = True
+        if self.settings_button.click() and self.on:
             self.settings = True
