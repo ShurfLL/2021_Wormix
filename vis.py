@@ -33,7 +33,7 @@ class Explosion(pygame.sprite.Sprite):
         self.rect.center = center # координаты центра взрыва
         self.frame = 0
         self.last_update = pygame.time.get_ticks()
-        self.frame_rate = 10       # скорость смены кадров
+        self.frame_rate = 50       # скорость смены кадров
 
     def update(self):
         now = pygame.time.get_ticks()
