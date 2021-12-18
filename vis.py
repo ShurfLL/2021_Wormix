@@ -103,3 +103,8 @@ def show_boom(): # показ спрайта на экране
 
 def draw_map(image):
     sc.blit(image, (0, 0))
+    
+def draw_health_box(obj):
+    pygame.draw.rect(sc, BLUE, (obj.x - obj.r - 2, obj.y - 1.5 * obj.r - 2, 40, 7))
+    pygame.draw.rect(sc, RED, (obj.x - obj.r, obj.y - 1.5*obj.r, obj.health / 12.5, 3))
+
