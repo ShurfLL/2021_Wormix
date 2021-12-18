@@ -23,6 +23,7 @@ map_image = pilImageToSurface(image_mass)
 dt = 0.5
 remove_part_of_map(450, 200, 300, borders, image_mass)
 
+
 start = pygame.mixer.Sound('music/while_playing.mp3')
 start.play(-1)
 start.set_volume(0.2)
@@ -53,6 +54,10 @@ while not finished:
         menu.AboutMenu()
         
     if settings.on:
+        fighting.stop()
+        if begging_flag == True:
+            start.play(-1)
+            begging_flag = False
         menu.settings = False
         settings.draw()
         for event in events:
@@ -85,11 +90,19 @@ while not finished:
         pause.draw()
         pause.check_events()
         if pause.to_menu:
+            fighting.stop()
+            if begging_flag == True:
+                start.play(-1)
+                begging_flag = False
             pause.on = False
             pause.to_menu = False
             playing = False
             menu.on = True
         if pause.settings:
+            fighting.stop()
+            if begging_flag == True:
+                start.play(-1)
+                begging_flag = False
             pause.on = False
             pause.settings = False
             playing = False
