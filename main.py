@@ -25,14 +25,13 @@ remove_part_of_map(450, 200, 300, borders, image_mass)
 
 start = pygame.mixer.Sound('music/while_playing.mp3')
 start.play(-1)
+start.set_volume(0.2)
 
 fighting = pygame.mixer.Sound("music/fighting.mp3")
 fighting.set_volume(0.2)
 
 walk = pygame.mixer.Sound("music/walk-compress.mp3")
-start.set_volume(0)
-fighting.set_volume(0)
-walk.set_volume(0)
+
 clock = pygame.time.Clock()
 finished = False
 while not finished:
@@ -57,25 +56,19 @@ while not finished:
         menu.settings = False
         settings.draw()
         for event in events:
-            
-            if event == pygame.MOUSEBUTTONDOWN:
+            if event.type == pygame.MOUSEBUTTONDOWN:
                 pos = pygame.mouse.get_pos()
                 if settings.volume.button_rect.collidepoint(pos):
                     settings.volume.hit = True
             if event.type == pygame.MOUSEBUTTONUP:
                 settings.volume.hit = False
-        
+        start.set_volume(settings.volume.start_val/100)
+        fighting.set_volume(settings.volume.start_val/100)
+        walk.set_volume(settings.volume.start_val/100)
         settings.check_events()
-            
+        
     if not settings.on:
         menu.on = True
-        for event in events:
-            if event == pygame.MOUSEBUTTONDOWN:
-                pos = pygame.mouse.get_pos()
-                if stg.button_rect.collidepoint(pos):
-                        settings.volume.hit = True
-            if event.type == pygame.MOUSEBUTTONUP:
-                settings.volume.hit = False
             
     if menu.start_game:
         menu.start_game = False

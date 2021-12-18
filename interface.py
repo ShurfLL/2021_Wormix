@@ -177,8 +177,8 @@ class SettingsMenu():
         self.offset = 70
         close_img = pygame.image.load('models/close.png').convert_alpha()
         self.close_button = Button(screen, screen.get_width()*4/5, 0, close_img, 0.15)
-        self.volume = Slider(self.screen, 'Volume', pygame.mixer.music.get_volume(),
-                             100, 0, (self.mid_w, self.mid_h), 4)
+        self.volume = Slider(self.screen, 'Volume', 20,
+                             100, 0, (self.mid_w - 3*self.offset, self.mid_h), 4)
 
     
     def draw(self):
