@@ -121,6 +121,7 @@ while not finished:
         cat.move(borders)
         move_object(cat, dt, borders)
         draw_object(cat)
+        draw_health_box(cat)
         
     for event in events:
         if event.type == pygame.QUIT:
