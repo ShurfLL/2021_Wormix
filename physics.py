@@ -23,8 +23,8 @@ recalculate_objects_positions()
 import pygame
 from map_editor import map_collision
 
-g = 0.5  #Ускорение свободного падения
 
+g = 2  #Ускорение свободного падения
 wind_force = 0  #Сила ветра
 
 
@@ -47,18 +47,24 @@ def move_object(body, dt, borders):
     """Перемещает тело."""
     body.vx += body.ax * dt
     for i in range(0, int(body.vx * dt + body.ax * dt**2)):
+    """
+    Перемещает тело
+    """
+    body.vx += body.ax * dt   #Обновляем параметры по оси 0х
+    for i in range (0, abs(int( body.vx * dt + body.ax * dt**2 ))):
         body.x += sign(body.vx)
         if map_collision(body, borders):
             body.vx, body.vy, body.ax, body.ay = 0, 0, 0, 0
-            body.x -= 3*sign(body.vx)
             break
 
     body.vy += body.ay * dt
     for i in range(0, int(body.vy * dt + body.ay * dt**2)):
+    
+    body.vy += body.ay * dt  #Обновляем параметры по оси 0у
+    for i in range (0, abs(int( body.vy * dt + body.ay * dt**2 ))):    ######ПОФИКСИТЬ!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!11
         body.y += sign(body.vy)
         if map_collision(body, borders):
             body.vx, body.vy, body.ax, body.ay = 0, 0, 0, 0
-            body.y -= 3*sign(body.vy)
             break
     
     body.ax = 0
