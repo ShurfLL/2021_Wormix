@@ -3,7 +3,6 @@
 import pygame
 import sys
 from os import path
-from map_editor import *
 
 W = 1400
 H = 660
@@ -64,11 +63,6 @@ for i in range(9):
 
 all_sprites = pygame.sprite.Group()
 
-def pilImageToSurface(image_mass):
-    pilImage = Image.fromarray(image_mass)
-    return pygame.image.fromstring(
-        pilImage.tobytes(), pilImage.size, pilImage.mode)
-
 
 def draw_object(obj): 
     """Рисует на экране произвольный объект."""
@@ -103,11 +97,6 @@ def show_boom():
     all_sprites.update()
     all_sprites.draw(sc)
     pygame.display.update()
-
-
-def draw_map(image):
-    """Изображает карту на экране."""
-    sc.blit(image, (0, 0))
     
     
 def draw_health_box(obj):

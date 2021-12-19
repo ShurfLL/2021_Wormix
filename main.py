@@ -1,8 +1,8 @@
 import pygame
 from objects import *
-from map_editor import *
+from map_editor import Map
 from interface import *
-from physics import *
+from physics import move_object
 from vis import *
 
 paused, playing = False, False
@@ -17,19 +17,14 @@ inv = Inventory(sc, [cat.weapon])
 cat.x = 450
 cat.y = 50
 objects=[cat]
-image_mass = image_to_mass('maps/map1.jpg')
-borders=detect_void(image_mass)
-map_image = pilImageToSurface(image_mass)
+game_map = Map()
+game_map.create_map('maps/map1.jpg')
 dt = 0.5
-
-
 start = pygame.mixer.Sound('music/while_playing.ogg')
 start.play(-1)
 start.set_volume(0.2)
-
 fighting = pygame.mixer.Sound("music/fighting.ogg")
 fighting.set_volume(0.2)
-
 walk = pygame.mixer.Sound("music/walk-compress.ogg")
 
 
@@ -39,7 +34,7 @@ def game(beginning_flag, playing):
     if beginning_flag == False:
         fighting.play(-1)
         beginning_flag = True
-    draw_map(map_image)
+    game_map.draw_map(sc)
     inv.draw()
     pause.draw()
     pause.check_events()
@@ -61,7 +56,7 @@ def game(beginning_flag, playing):
         pause.settings = False
         playing = False
         settings.on = True
-    cat.check_for_ground(borders)
+    cat.check_for_ground(game_map.borders)
     for event in events:
         if event.type == pygame.QUIT:
             finished = True
@@ -72,8 +67,8 @@ def game(beginning_flag, playing):
             create_boom(*event.pos)
             pygame.display.update()
             all_sprites.update()
-    cat.move(borders)
-    move_object(cat, dt, borders)
+    cat.move(game_map.borders)
+    move_object(cat, dt, game_map.borders)
     draw_object(cat)
     draw_health_box(cat)
     return beginning_flag, playing

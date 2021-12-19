@@ -1,8 +1,7 @@
-import pygame
 from map_editor import map_collision
 
-g = 2  #Ускорение свободного падения
 
+g = 2  #Ускорение свободного падения
 wind_force = 0  #Сила ветра
 
 

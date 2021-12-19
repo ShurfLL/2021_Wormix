@@ -1,14 +1,7 @@
-import math
-import random
 import pygame
 import numpy as np
 from physics import calculate_accelerations
-from map_editor import map_collision, check_traj, remove_part_of_map
-
-def objects_collision(obj1, obj2):
-    dist = int(math.sqrt((obj1.x - obj2.x) ** 2 + (obj1.y - obj2.y) ** 2))
-    return (obj1.r + obj2.r <= dist)
-
+from map_editor import map_collision, check_traj
 
 class AbstractWeapon():
     def __init__(self):
@@ -42,20 +35,6 @@ class AbstractWeapon():
             self.bullet.vy = -self.f_power*math.sin(self.an)
             self.fire_on = False
             return self.bullet
-
-    # def fire_start(self):
-    #     self.fire_on = True
-
-    # def power_up(self):
-    #     if self.fire_on:
-    #         if self.f_power < 30:
-    #             self.f_power += 1
-
-    # def fire_end(self):
-    #     self.bullet.vx = self.f_power*math.cos(self.an)
-    #     self.bullet.vy = -self.f_power*math.sin(self.an)
-    #     self.fire_on = False
-    #     return self.bullet
 
 
 class AbstractBullet():
@@ -134,9 +113,6 @@ class Uzi(AbstractWeapon):
 
 
 class Player():
-    # bazooka = Bazooka()
-    # uzi = Uzi()
-    # available_weapons = dict({'bazooka':bazooka, 'uzi':uzi})        #Доступные оружия для игрока
     def __init__(self):
         self.name = ""
         self.health = 500
@@ -246,4 +222,7 @@ class Player():
         for i in range(max(self.x-self.r, 0),min(self.x+self.r, b_x)):
             if not borders[self.y+self.r][i]:
                 self.on_ground = True
-        #Нужно создать функцию выбора оружия из словаря оружий
+
+
+if __name__ == "__main__":
+    print("This module is not for direct call!")
