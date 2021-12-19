@@ -37,7 +37,7 @@ class Explosion(pygame.sprite.Sprite):
         self.frame_rate = 50   # скорость смены кадров: чем больше, тем медленнее
 
     def update(self):
-        """Смена кадров, в зависимости от прошедшего времени."
+        """Смена кадров, в зависимости от прошедшего времени."""
         now = pygame.time.get_ticks()
         if now - self.last_update > self.frame_rate:
             self.last_update = now
