@@ -35,6 +35,7 @@ walk = pygame.mixer.Sound("music/walk-compress.mp3")
 
 
 def game(beginning_flag, playing):
+    """Соединяет все элементы игры и обнавляет ее состояния"""
     start.stop()
     if beginning_flag == False:
         fighting.play(-1)
@@ -79,6 +80,7 @@ def game(beginning_flag, playing):
     return beginning_flag, playing
 
 def main_menu(finished, playing):
+    """Обновляет состояния меню"""
     if menu.on:
         menu.draw()
         menu.check_events()
@@ -100,6 +102,7 @@ def main_menu(finished, playing):
     return finished, playing
 
 def settings_menu(beginning_flag):
+    """Обновляет состояния настроек и музыки"""
     if settings.on:
         fighting.stop()
         if beginning_flag == True:

@@ -2,12 +2,14 @@ import pygame
 
 
 def get_object_pic(weapon):
+    """Загружает изображение объекта из модуля objects"""
     if weapon != None:
         return pygame.image.load(weapon.sprite)
     else:
         pass
 
 def draw_text(display, text, size, font_name, color, x, y):
+    """Отрисовывает текст заданного размера и шрифта"""
     font = pygame.font.Font(font_name,size)
     text_surface = font.render(text, True, color)
     text_rect = text_surface.get_rect()
@@ -16,6 +18,7 @@ def draw_text(display, text, size, font_name, color, x, y):
     
 
 class Inventory():
+    """Инвентарь для игрока"""
     def __init__(self, screen, weapons):
         self.screen = screen
         self.inventory = weapons
@@ -24,6 +27,7 @@ class Inventory():
     
     
     def draw(self):
+        """Отрисовывает спрайт оружия на экране"""
         dx = 0
         if self.inventory[0] == None:
             return
@@ -50,14 +54,14 @@ class Button:
         
     def draw(self):
         '''
-        отображает кнопку на поверхности
+        Отображает кнопку на поверхности
         '''
         self.screen.blit(self.image, (self.rect.x, self.rect.y))
 
 
     def click(self):
         '''
-        проверяет, была ли кнопка нажата
+        Проверяет, была ли кнопка нажата
 
         '''
         action = False
@@ -73,7 +77,7 @@ class Button:
     
     
 class Slider():
-    '''ползунок для меню'''
+    '''Ползунок для меню'''
     def __init__(self, screen, text, start_val, maximum, minimum, pos, scale = 1):
         self.screen = screen
         self.txt_surf = pygame.Surface((100*scale, 40))
@@ -99,6 +103,7 @@ class Slider():
         pygame.draw.circle(self.button_surf, (255, 140, 0), (10*scale, 10*scale), 4*scale/2, 0)
         
     def draw(self):
+        """Рисует ползунок"""
         surf = self.surf.copy()
         new_pos = (10*self.scale+int((self.start_val-self.min)/(self.max-self.min)*80*self.scale), 33*self.scale)
         self.button_rect = self.button_surf.get_rect(center=new_pos)
@@ -107,6 +112,7 @@ class Slider():
         self.screen.blit(surf, (self.pos[0], self.pos[1]))
         
     def move(self):
+        """Меняет положение ползунка в зависимости от полодения мыши"""
         self.start_val = (pygame.mouse.get_pos()[0] - self.pos[0] - self.scale*10) / (self.scale*80) * (self.max - self.min) + self.min
         if self.start_val < self.min:
             self.start_val = self.min
@@ -140,6 +146,7 @@ class MainMenu():
         self.info_button.draw()
         
     def check_events(self):
+        """Проверяет, нажаты ли кнопки и обновляет состояния"""
         if self.exit_button.click():
             self.quit = True
         if self.start_button.click():
@@ -152,6 +159,7 @@ class MainMenu():
             self.info = True
             
     def AboutMenu(self):
+        """Отрисовывает меню с информацией пока зажата кнопка"""
         self.screen.fill((179, 218, 241))
         self.screen.blit(self.bang_img, (0,0))
         delta = 50
@@ -166,10 +174,6 @@ class MainMenu():
 
 
 class SettingsMenu():
-    '''
-    Отображает страницу с настройками
-
-    '''
     def __init__(self, screen):
         self.on = False
         self.screen = screen
@@ -189,6 +193,7 @@ class SettingsMenu():
         self.volume.draw()
         
     def check_events(self):
+        """Обновляет состояния меню настроек и звук в игре"""
         if self.close_button.click():
             self.on = False
         if self.volume.hit:
@@ -196,9 +201,6 @@ class SettingsMenu():
     
 
 class PauseMenu():
-    '''
-    меню паузы
-    '''
     def __init__(self, screen):
         self.on = False
         self.to_menu = False
@@ -224,6 +226,7 @@ class PauseMenu():
             self.settings_button.draw()
         
     def check_events(self):
+        """Проверяет, нажаты ли кнопки о обновляет состояния"""
         if self.button.click():
             self.on = True
         if self.close_button.click() and self.on:
