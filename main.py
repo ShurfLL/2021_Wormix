@@ -6,7 +6,7 @@ from physics import *
 from vis import *
 
 paused, playing = False, False
-begging_flag = False
+beginning_flag = False
 
 menu = MainMenu(sc)
 settings = SettingsMenu(sc)
@@ -32,12 +32,54 @@ fighting.set_volume(0.2)
 
 walk = pygame.mixer.Sound("music/walk-compress.ogg")
 
-clock = pygame.time.Clock()
-finished = False
-while not finished:
-    clock.tick(FPS)
-    
-    events = pygame.event.get()
+
+def game(beginning_flag, playing):
+    """Соединяет все элементы игры и обнавляет ее состояния"""
+    start.stop()
+    if beginning_flag == False:
+        fighting.play(-1)
+        beginning_flag = True
+    draw_map(map_image)
+    inv.draw()
+    pause.draw()
+    pause.check_events()
+    if pause.to_menu:
+        fighting.stop()
+        if beginning_flag == True:
+            start.play(-1)
+            beginning_flag = False
+        pause.on = False
+        pause.to_menu = False
+        playing = False
+        menu.on = True
+    if pause.settings:
+        fighting.stop()
+        if beginning_flag == True:
+            start.play(-1)
+            beginning_flag = False
+        pause.on = False
+        pause.settings = False
+        playing = False
+        settings.on = True
+    cat.check_for_ground(borders)
+    for event in events:
+        if event.type == pygame.QUIT:
+            finished = True
+        if event.type == pygame.KEYDOWN or event.type == pygame.KEYUP:
+            cat.get_move(event)
+            walk.play(0)
+        if event.type == pygame.MOUSEBUTTONDOWN:
+            create_boom(*event.pos)
+            pygame.display.update()
+            all_sprites.update()
+    cat.move(borders)
+    move_object(cat, dt, borders)
+    draw_object(cat)
+    draw_health_box(cat)
+    return beginning_flag, playing
+
+def main_menu(finished, playing):
+    """Обновляет состояния меню"""
     if menu.on:
         menu.draw()
         menu.check_events()
@@ -52,11 +94,19 @@ while not finished:
     if menu.info:
         menu.AboutMenu()
         
+    if menu.start_game:
+        menu.start_game = False
+        playing = True
+        menu.on = False
+    return finished, playing
+
+def settings_menu(beginning_flag):
+    """Обновляет состояния настроек и музыки"""
     if settings.on:
         fighting.stop()
-        if begging_flag == True:
+        if beginning_flag == True:
             start.play(-1)
-            begging_flag = False
+            beginning_flag = False
         menu.settings = False
         settings.draw()
         for event in events:
@@ -73,54 +123,19 @@ while not finished:
         
     if not settings.on:
         menu.on = True
-            
-    if menu.start_game:
-        menu.start_game = False
-        playing = True
-        menu.on = False
+    return beginning_flag
+
+clock = pygame.time.Clock()
+finished = False
+while not finished:
+    clock.tick(FPS)
+    events = pygame.event.get()
+    
+    finished, playing = main_menu(finished, playing)    
+    beginning_flag = settings_menu(beginning_flag)
         
     if playing:
-        start.stop()
-        if begging_flag == False:
-            fighting.play(-1)
-            begging_flag = True
-        draw_map(map_image)
-        inv.draw()
-        pause.draw()
-        pause.check_events()
-        if pause.to_menu:
-            fighting.stop()
-            if begging_flag == True:
-                start.play(-1)
-                begging_flag = False
-            pause.on = False
-            pause.to_menu = False
-            playing = False
-            menu.on = True
-        if pause.settings:
-            fighting.stop()
-            if begging_flag == True:
-                start.play(-1)
-                begging_flag = False
-            pause.on = False
-            pause.settings = False
-            playing = False
-            settings.on = True
-        cat.check_for_ground(borders)
-        for event in events:
-            if event.type == pygame.QUIT:
-                finished = True
-            if event.type == pygame.KEYDOWN or event.type == pygame.KEYUP:
-                cat.get_move(event)
-                walk.play(0)
-            if event.type == pygame.MOUSEBUTTONDOWN:
-                create_boom(*event.pos)
-                pygame.display.update()
-                all_sprites.update()
-        cat.move(borders)
-        move_object(cat, dt, borders)
-        draw_object(cat)
-        draw_health_box(cat)
+        beginning_flag, playing = game(beginning_flag, playing)
         
     for event in events:
         if event.type == pygame.QUIT:
