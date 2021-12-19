@@ -175,9 +175,9 @@ class Player():
             self.y -= 3
             #self.vx = 3 if self.orientation == "right" else -3
             if self.orientation == "right":
-                self.vx = 7
+                self.vx = 10
             elif self.orientation == "left":
-                self.vx = -7
+                self.vx = -10
             self.vy = -15
             self.start_jump = False
 
