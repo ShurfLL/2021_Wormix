@@ -24,7 +24,7 @@ def move_object(body, dt, borders):
     Перемещает тело
     """
     body.vx += body.ax * dt   #Обновляем параметры по оси 0х
-    for i in range (0, int( body.vx * dt + body.ax * dt**2 )):
+    for i in range (0, abs(int( body.vx * dt + body.ax * dt**2 ))):
         body.x += sign(body.vx)
         if map_collision(body, borders):
             body.vx, body.vy, body.ax, body.ay = 0, 0, 0, 0
@@ -32,7 +32,7 @@ def move_object(body, dt, borders):
 
     
     body.vy += body.ay * dt  #Обновляем параметры по оси 0у
-    for i in range (0, int( body.vy * dt + body.ay * dt**2 )):
+    for i in range (0, abs(int( body.vy * dt + body.ay * dt**2 ))):    ######ПОФИКСИТЬ!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!11
         body.y += sign(body.vy)
         if map_collision(body, borders):
             body.vx, body.vy, body.ax, body.ay = 0, 0, 0, 0

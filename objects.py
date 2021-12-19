@@ -106,7 +106,7 @@ class Bazooka(AbstractWeapon):
         self.orientation = "left"
         self.caption = "Boom-Boom"
         self.bullet = "Rocket"
-        self.sprite = 'models/Bazooka.png'
+        self.sprite = 'models/bazooka.png'
         self.bullet = Rocket()
 
 
@@ -134,9 +134,9 @@ class Uzi(AbstractWeapon):
 
 
 class Player():
-    bazooka = Bazooka()
-    uzi = Uzi()
-    available_weapons = dict({'bazooka':bazooka, 'uzi':uzi})        #Доступные оружия для игрока
+    # bazooka = Bazooka()
+    # uzi = Uzi()
+    # available_weapons = dict({'bazooka':bazooka, 'uzi':uzi})        #Доступные оружия для игрока
     def __init__(self):
         self.name = ""
         self.health = 500
@@ -152,6 +152,7 @@ class Player():
         self.dx = 2
         self.dy = 5
         self.start_jump = False
+        self.start_bjump = False
         self.on_ground = False
         self.orientation = "left"
         self.move_left = False
@@ -160,11 +161,20 @@ class Player():
         self.weapon = None
     
     def give_weapon(self, dict_weapons, name):
-        self.weapon = weapons[name]
+        self.weapon = dict_weapons[name]
         self.weapon.x = self.x
         self.weapon.y = self.y
         self.weapon.orientation = self.orientation
+        return self.weapon
 
+    def weapon_update(self):
+        if self.weapon != None:
+            self.weapon.x = self.x
+            self.weapon.y = self.y
+            self.weapon.orientation = self.orientation
+        else:
+            pass
+            
     def get_move(self, event):
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_LEFT:
@@ -175,6 +185,8 @@ class Player():
                 self.orientation = "right"
             if event.key == pygame.K_RETURN:
                 self.start_jump = True
+            if event.key == pygame.K_r:
+                self.start_bjump = True
         if event.type == pygame.KEYUP:
             if event.key == pygame.K_LEFT:
                 self.move_left = False
@@ -182,14 +194,28 @@ class Player():
                 self.move_right = False
 
     def jump(self, borders):
-        if not check_traj(self, 0, -20, borders):
-            self.y -= 20
+        if not check_traj(self, 0, -3, borders):
+            self.on_ground = False
+            self.y -= 3
             #self.vx = 3 if self.orientation == "right" else -3
             if self.orientation == "right":
-                self.vx = 3
+                self.vx = 7
             elif self.orientation == "left":
+                self.vx = -7
+            self.vy = -15
+            self.start_jump = False
+
+    def backjump(self, borders):
+        if not check_traj(self, 0, -3, borders):
+            self.on_ground = False
+            self.y -= 3
+            #self.vx = 3 if self.orientation == "right" else -3
+            if self.orientation == "right":
                 self.vx = -3
-            self.vy = -20
+            elif self.orientation == "left":
+                self.vx = 3
+            self.vy = -25
+            self.start_bjump = False
     
     def move(self,borders):
         if self.on_ground:
@@ -204,9 +230,9 @@ class Player():
                 self.x -= self.dx
                 self.y -= self.dy
             if self.start_jump:
-                self.start_jump = False
                 self.jump(borders)
-                
+            if self.start_bjump:
+                self.backjump(borders)
         else:
             calculate_accelerations(self)
 
@@ -220,6 +246,4 @@ class Player():
         for i in range(max(self.x-self.r, 0),min(self.x+self.r, b_x)):
             if not borders[self.y+self.r][i]:
                 self.on_ground = True
-
-    def give_weapon(self):
-        self.weapon = weapon_selection(available_weapons)         #Нужно создать функцию выбора оружия из словаря оружий
+        #Нужно создать функцию выбора оружия из словаря оружий

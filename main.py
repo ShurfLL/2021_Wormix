@@ -21,17 +21,16 @@ image_mass = image_to_mass('maps/map1.jpg')
 borders=detect_void(image_mass)
 map_image = pilImageToSurface(image_mass)
 dt = 0.5
-remove_part_of_map(450, 200, 300, borders, image_mass)
 
 
-start = pygame.mixer.Sound('music/while_playing.mp3')
+start = pygame.mixer.Sound('music/while_playing.ogg')
 start.play(-1)
 start.set_volume(0.2)
 
-fighting = pygame.mixer.Sound("music/fighting.mp3")
+fighting = pygame.mixer.Sound("music/fighting.ogg")
 fighting.set_volume(0.2)
 
-walk = pygame.mixer.Sound("music/walk-compress.mp3")
+walk = pygame.mixer.Sound("music/walk-compress.ogg")
 
 clock = pygame.time.Clock()
 finished = False
