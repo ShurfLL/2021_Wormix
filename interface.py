@@ -53,17 +53,12 @@ class Button:
 
         
     def draw(self):
-        '''
-        Отображает кнопку на поверхности
-        '''
+        """Отображает кнопку на поверхности"""
         self.screen.blit(self.image, (self.rect.x, self.rect.y))
 
 
     def click(self):
-        '''
-        Проверяет, была ли кнопка нажата
-
-        '''
+        """Проверяет, была ли кнопка нажата"""
         action = False
         pos = pygame.mouse.get_pos()
         if self.rect.collidepoint(pos):
