@@ -6,7 +6,7 @@ from physics import *
 from vis import *
 
 paused, playing = False, False
-begging_flag = False
+beginning_flag = False
 
 menu = MainMenu(sc)
 settings = SettingsMenu(sc)
@@ -34,29 +34,29 @@ fighting.set_volume(0.2)
 walk = pygame.mixer.Sound("music/walk-compress.mp3")
 
 
-def game(begging_flag, playing):
+def game(beginning_flag, playing):
     start.stop()
-    if begging_flag == False:
+    if beginning_flag == False:
         fighting.play(-1)
-        begging_flag = True
+        beginning_flag = True
     draw_map(map_image)
     inv.draw()
     pause.draw()
     pause.check_events()
     if pause.to_menu:
         fighting.stop()
-        if begging_flag == True:
+        if beginning_flag == True:
             start.play(-1)
-            begging_flag = False
+            beginning_flag = False
         pause.on = False
         pause.to_menu = False
         playing = False
         menu.on = True
     if pause.settings:
         fighting.stop()
-        if begging_flag == True:
+        if beginning_flag == True:
             start.play(-1)
-            begging_flag = False
+            beginning_flag = False
         pause.on = False
         pause.settings = False
         playing = False
@@ -76,7 +76,7 @@ def game(begging_flag, playing):
     move_object(cat, dt, borders)
     draw_object(cat)
     draw_health_box(cat)
-    return begging_flag, playing
+    return beginning_flag, playing
 
 def main_menu(finished, playing):
     if menu.on:
@@ -99,12 +99,12 @@ def main_menu(finished, playing):
         menu.on = False
     return finished, playing
 
-def settings_menu(begging_flag):
+def settings_menu(beginning_flag):
     if settings.on:
         fighting.stop()
-        if begging_flag == True:
+        if beginning_flag == True:
             start.play(-1)
-            begging_flag = False
+            beginning_flag = False
         menu.settings = False
         settings.draw()
         for event in events:
@@ -121,7 +121,7 @@ def settings_menu(begging_flag):
         
     if not settings.on:
         menu.on = True
-    return begging_flag
+    return beginning_flag
 
 clock = pygame.time.Clock()
 finished = False
@@ -130,10 +130,10 @@ while not finished:
     events = pygame.event.get()
     
     finished, playing = main_menu(finished, playing)    
-    begging_flag = settings_menu(begging_flag)
+    beginning_flag = settings_menu(beginning_flag)
         
     if playing:
-        begging_flag, playing = game(begging_flag, playing)
+        beginning_flag, playing = game(beginning_flag, playing)
         
     for event in events:
         if event.type == pygame.QUIT:
