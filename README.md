@@ -18,8 +18,8 @@ Simple dual game wrote on python using pygame
 Game requires the following to run:
 * [Python] 3.9.7
 * [Pygame] 2.1.0
-*[Pillow] 8.4.0
-*[Numpy] 1.21.4
+* [Pillow] 8.4.0
+* [Numpy] 1.21.4
 
 ## Usage
 Starting via ```Main.py```:
@@ -28,7 +28,6 @@ python3 Main.py
 ````
 ## Authors
 * [Shakirov Timur](https://github.com/ShurfLL)
-
 * [Shmyrkov Leonid](https://github.com/Shmyrkov)
 * [Shinko Ivan](https://github.com/sHiNkO1975)
 * [Shlykov Nikoly](https://github.com/negaskolya)
