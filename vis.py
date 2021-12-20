@@ -5,7 +5,10 @@ import sys
 from os import path
 
 W = 1400
+"""Ширина окна"""
+
 H = 660
+"""Высота окна"""
 
 WHITE = (255, 255, 255)
 BLACK = (0, 0, 0)
@@ -13,9 +16,9 @@ RED = (255, 0, 0)
 GREEN = (0, 255, 0)
 BLUE = (0, 0, 255)
 YELLOW = (255, 255, 0)
+"""Параметры цвета"""
 
 pygame.init()
-img_dir = path.join(path.dirname(__file__), 'img')
 sc = pygame.display.set_mode((W, H))
 sc.fill((100, 150, 200))
 
