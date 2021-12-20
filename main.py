@@ -5,6 +5,7 @@ from interface import *
 from physics import move_object
 from vis import *
 
+
 paused, playing = False, False
 beginning_flag = False
 
@@ -12,22 +13,13 @@ menu = MainMenu(sc)
 settings = SettingsMenu(sc)
 pause = PauseMenu(sc)
 
-<<<<<<< HEAD
 cat1 = Player(450, 50, True)
-cat2 = Player(600, 400) 
+cat2 = Player(800, 390) 
 inv = Inventory(sc, [cat1.weapon])
 players = [cat1, cat2]
 weapons = [cat1.weapon, cat2.weapon]
 bullets = []
 water = Death_water()
-=======
-cat = Player()
-cat.weapon = Bazooka()
-inv = Inventory(sc, [Bazooka(), Uzi()])
-cat.x = 450
-cat.y = 50
-objects=[cat]
->>>>>>> fd0c659950844a4119c275b1fe9611910465f4b0
 game_map = Map()
 game_map.create_map('maps/map1.jpg')
 dt = 0.5
@@ -39,8 +31,22 @@ fighting.set_volume(0.2)
 walk = pygame.mixer.Sound("music/walk-compress.ogg")
 
 
+def change_turn(players):
+    for player in players:
+        if player.active:
+            player.active = False
+        else:
+            player.active = True
+
+
 def game(beginning_flag, playing):
     """Соединяет все элементы игры и обнавляет ее состояния"""
+    # pygame.time.set_timer(404, t_turn*1000)
+    # pygame.time.set_timer(pygame.USEREVENT+1, t_turn*1000)
+    # for event in events:
+    #     if event.type == pygame.USEREVENT+1:
+    #         print('check')
+    #         change_turn(players)
     start.stop()
     if beginning_flag == False:
         fighting.play(-1)
@@ -70,20 +76,14 @@ def game(beginning_flag, playing):
     for event in events:
         if event.type == pygame.QUIT:
             finished = True
-<<<<<<< HEAD
         for cat in players:
             if cat.active:
                 if event.type == pygame.KEYDOWN or event.type == pygame.KEYUP:
                     cat.get_move(event)
                     cat.give_weapon(event)
+                cat.weapon.get_target(event)
                 if event.type == pygame.KEYDOWN and event.key == pygame.K_SPACE:
                     bullets.append(cat.weapon.fire_start())
-            cat.weapon.get_target(event)
-            # cat.weapon.update(event) 
-        # if event.type == pygame.MOUSEBUTTONDOWN:
-            # create_boom(*event.pos)
-            # pygame.display.update()
-            # all_sprites.update()
     for bullet in bullets:
         draw_object(bullet)
         move_object(bullet, dt, game_map.borders)
@@ -97,23 +97,10 @@ def game(beginning_flag, playing):
         draw_object(cat.weapon)
         draw_health_box(cat)
         water.kill_player(cat)
+        if cat.health <= 0:
+            pass
     water.rise_of_water_level()
     water.draw(sc)
-    
-=======
-        if event.type == pygame.KEYDOWN or event.type == pygame.KEYUP:
-            cat.get_move(event)
-            walk.play(0)
-        if event.type == pygame.MOUSEBUTTONDOWN:
-            create_boom(*event.pos)
-            pygame.display.update()
-            all_sprites.update()
-    cat.move(game_map.borders)
-    move_object(cat, dt, game_map.borders)
-    draw_object(cat)
-    draw_health_box(cat)
-    inv.draw(cat)
->>>>>>> fd0c659950844a4119c275b1fe9611910465f4b0
     return beginning_flag, playing
 
 def main_menu(finished, playing):
@@ -166,7 +153,7 @@ def settings_menu(beginning_flag):
 clock = pygame.time.Clock()
 finished = False
 while not finished:
-    clock.tick(FPS)
+    # clock.tick(FPS)
     events = pygame.event.get()
     
     finished, playing = main_menu(finished, playing)    

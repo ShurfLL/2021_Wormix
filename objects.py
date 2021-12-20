@@ -4,6 +4,7 @@ import math
 from physics import calculate_accelerations
 from map_editor import map_collision, check_traj
 
+
 class AbstractWeapon():
     def __init__(self):
         self.name = ""
@@ -29,21 +30,21 @@ class AbstractWeapon():
             if event.key == pygame.K_UP or pygame.K_DOWN:
                 self.wan = 0
     def target(self):
-        if abs(self.an)< 90:
+        if abs(self.an)< 90 and abs(self.an+self.wan)<90:
             self.an += self.wan
         else: self.an -= self.wan
         
 
     def fire_start(self):
         if self.orientation == "right":
-            self.bullet.x = self.x + 20
+            self.bullet.x = self.x + 10
             self.bullet.vx = self.f_power*math.cos(self.an)
         else:
-            self.bullet.x = self.x - 20
+            self.bullet.x = self.x - 10
             self.bullet.vx = -self.f_power*math.cos(self.an)
         self.bullet.y = self.y
         self.bullet.orientation = self.orientation
-        self.bullet.vy = -self.f_power*math.sin(self.an)
+        self.bullet.vy = self.f_power*math.sin(self.an)
         self.bullet.an = self.an
         return self.bullet
 
@@ -66,6 +67,7 @@ class AbstractBullet():
         self.sprite = None
 
     def bullet_collision(self, borders, image_mass, players):
+        v_0 = 15
         for player in players:
             if object_collision(self, player) or map_collision(self, borders):
                 self.active = False
@@ -100,7 +102,7 @@ class Bazooka(AbstractWeapon):
         self.orientation = "left"
         self.caption = "Boom-Boom"
         self.bullet = "Rocket"
-        self.fire_power = 50
+        self.f_power = 50
         self.sprite = pygame.image.load('models/bazooka.png')
         self.bullet = Rocket()
 
@@ -112,7 +114,7 @@ class UziBullet(AbstractBullet):
         self.name = "UziBullet"
         self.an = 0
         self.fire_force = 4
-        self.max_damage = 50
+        self.max_damage = 5
         self.active = True
         self.orientation = "left"
         self.sprite = pygame.image.load('models/UziBullet.png')
@@ -125,7 +127,7 @@ class Uzi(AbstractWeapon):
         self.orientation = "left"
         self.caption = "Boom-Boom"
         self.bullet = "UziBullet"
-        self.fire_power = 100
+        self.f_power = 10
         self.sprite = pygame.image.load('models/uzi.png')
         self.bullet = UziBullet()
 
