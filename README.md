@@ -2,7 +2,8 @@
 Simple dual game wrote on python using pygame
 ## Description
 ### Game control
-```<-,->``` - move
+```right, left arrows``` - move
+```up, down arrows``` - turn the weapon
 ```SPACE``` - shoot
 ```Enter``` - forward jump 
 ```R``` - back jump
