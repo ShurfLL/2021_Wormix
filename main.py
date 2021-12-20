@@ -16,7 +16,9 @@ cat = Player()
 inv = Inventory(sc, [cat.weapon])
 cat.x = 450
 cat.y = 50
-objects=[cat]
+players = [cat]
+weapons = []
+bullets = []
 game_map = Map()
 game_map.create_map('maps/map1.jpg')
 dt = 0.5
@@ -63,13 +65,18 @@ def game(beginning_flag, playing):
         if event.type == pygame.KEYDOWN or event.type == pygame.KEYUP:
             cat.get_move(event)
             walk.play(0)
+            cat.give_weapon(event)
         if event.type == pygame.MOUSEBUTTONDOWN:
             create_boom(*event.pos)
             pygame.display.update()
             all_sprites.update()
+        cat.weapon.update(event) 
+    cat.weapon.an +=cat.weapon.wan
     cat.move(game_map.borders)
     move_object(cat, dt, game_map.borders)
+    cat.weapon_update()
     draw_object(cat)
+    draw_object(cat.weapon)
     draw_health_box(cat)
     return beginning_flag, playing
 

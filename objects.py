@@ -1,5 +1,6 @@
 import pygame
 import numpy as np
+import math
 from physics import calculate_accelerations
 from map_editor import map_collision, check_traj
 
@@ -8,33 +9,44 @@ class AbstractWeapon():
         self.name = ""
         self.caption = ""
         self.an = 0
+        self.wan = 0
         self.f_power = 0
         self.fire_on = False
         self.x = 0
         self.y = 0
-        self.r = 10
+        self.r = 20
         self.bullet = None
         self.orientation = None
         self.sprite = None
 
-    def targetting(self, event):
+    def targetting(self, event):    ######## Пофиксить прицеливание!!!!!!!!!!!!
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_UP and self.an < 90:
-                self.an += 5
-            if event.key == pygame.K_DOWN and self.an > 0:
-                self.an -= 5
+                self.wan = -5
+            if event.key == pygame.K_DOWN and self.an > -90:
+                self.wan = 5
+        if self.an >= 80 or self.an <= -80:
+            self.wan = 0
+        if event.type == pygame.KEYUP:
+            if event.key == pygame.K_UP or event.key == pygame.K_UP:
+                self.wan = 0
+        
 
     def fire(self, event):
-        if event.type == pygame.KEYDOWN and event.key == K_SPACE:
+        if event.type == pygame.KEYDOWN and event.key == pygame.K_SPACE:
             self.fire_on = True
         if self.fire_on:
             if self.f_power < 30:
                 self.f_power += 1
-        if event.type == pygame.KEYUP and event.key == K_SPACE:
+        if event.type == pygame.KEYUP and event.key == pygame.K_SPACE:
             self.bullet.vx = self.f_power*math.cos(self.an)
             self.bullet.vy = -self.f_power*math.sin(self.an)
             self.fire_on = False
             return self.bullet
+
+    def update(self, event):##### Тут тоже!!!!!!!
+        self.targetting(event)
+        self.fire(event)
 
 
 class AbstractBullet():
@@ -47,30 +59,32 @@ class AbstractBullet():
         self.vy = 0
         self.ax = 0
         self.ay = 0
-        self.r = 5
+        self.r = 10
+        self.max_damage = 0
         self.fire_force = 0
         self.active = True
         self.orientation = None
         self.sprite = None
 
     def bullet_collision(self, borders, image_mass, players):
-        if map_collision(self, borders):
-            self.active = False
-            remove_part_of_map(self.x, self.y, self.fire_force, borders, image_mass)
-            for player in players:
-                dist = ( player.x - self.x ) ** 2 + ( player.y - self.y ) ** 2
-                if dist <= self.fire_force ** 2:
-                    collision_an = math.atan2((player.y - self.y), (player.x - self.x))    #Угол окидывания игрока
-                    player.health -= int( 125 - 125 * dist / self.fire_force )      #Нанесение урона игроку
-                    player.vx +=  math.cos(collision_an) * ( v_0 - v_0 * dist / self.fire_force )     #Откидывание игрока из-за взрыва
-                    player.vy +=  math.sin(collision_an) * ( v_0 - v_0 * dist / self.fire_force )
+        for player in players:
+            if object_collision(self, player) or map_collision(self, borders):
+                self.active = False
+                remove_part_of_map(self.x, self.y, self.fire_force, borders, image_mass)
+                for player in players:
+                    dist = ( player.x - self.x ) ** 2 + ( player.y - self.y ) ** 2
+                    if dist <= self.fire_force ** 2:
+                        collision_an = math.atan2((player.y - self.y), (player.x - self.x))    #Угол окидывания игрока
+                        player.health -= int( self.max_damage - self.max_damage * dist / self.fire_force )      #Нанесение урона игроку
+                        player.vx +=  math.cos(collision_an) * ( v_0 - v_0 * dist / self.fire_force )     #Откидывание игрока из-за взрыва
+                        player.vy +=  math.sin(collision_an) * ( v_0 - v_0 * dist / self.fire_force )
 
 
 class Rocket(AbstractBullet):
     def __init__(self):
         super().__init__()
         self.name = "Rocket"
-        self.an = 0
+        self.max_damage = 90
         self.fire_force = 15
         self.active = True
         self.orientation = "right"
@@ -96,6 +110,7 @@ class UziBullet(AbstractBullet):
         self.name = "UziBullet"
         self.an = 0
         self.fire_force = 4
+        self.max_damage = 50
         self.active = True
         self.orientation = "right"
         self.sprite = 'models/UziBullet.png'
@@ -108,7 +123,7 @@ class Uzi(AbstractWeapon):
         self.orientation = "left"
         self.caption = "Boom-Boom"
         self.bullet = "UziBullet"
-        self.sprite = 'models/Uzi.png'
+        self.sprite = 'models/uzi.png'
         self.bullet = UziBullet()
 
 
@@ -134,22 +149,26 @@ class Player():
         self.move_left = False
         self.move_right = False
         self.sprite = 'models/cat.png'
-        self.weapon = None
+        self.weapon = Uzi()
     
-    def give_weapon(self, dict_weapons, name):
-        self.weapon = dict_weapons[name]
-        self.weapon.x = self.x
-        self.weapon.y = self.y
-        self.weapon.orientation = self.orientation
-        return self.weapon
+    def give_weapon(self, event):
+        if event.type == pygame.KEYDOWN and event.key == pygame.K_1:
+            self.weapon = Bazooka()
+            self.weapon.x = self.x
+            self.weapon.y = self.y
+            self.weapon.orientation = self.orientation
+        if event.type == pygame.KEYDOWN and event.key == pygame.K_2:
+            self.weapon = Uzi()
+            self.weapon.x = self.x
+            self.weapon.y = self.y
+            self.weapon.orientation = self.orientation
 
     def weapon_update(self):
         if self.weapon != None:
             self.weapon.x = self.x
             self.weapon.y = self.y
             self.weapon.orientation = self.orientation
-        else:
-            pass
+
             
     def get_move(self, event):
         if event.type == pygame.KEYDOWN:
@@ -175,9 +194,9 @@ class Player():
             self.y -= 3
             #self.vx = 3 if self.orientation == "right" else -3
             if self.orientation == "right":
-                self.vx = 7
+                self.vx = 10
             elif self.orientation == "left":
-                self.vx = -7
+                self.vx = -10
             self.vy = -15
             self.start_jump = False
 
@@ -223,6 +242,12 @@ class Player():
             if not borders[self.y+self.r][i]:
                 self.on_ground = True
 
+
+class Death_water():
+    def __init__():
+        self.time = 300
+        self.y = 0
+        self.sprite = "models/water.png"
 
 if __name__ == "__main__":
     print("This module is not for direct call!")

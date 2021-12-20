@@ -22,6 +22,22 @@ sc.fill((100, 150, 200))
 FPS = 60
 
 
+# def rot_center(image, angle):
+#     """поворачивает surface отн. центра."""
+
+#     loc = image.get_rect().center
+#     rot_sprite = pygame.transform.rotate(image, angle)
+#     rot_sprite.get_rect().center = loc
+#     return rot_sprite
+def rot_center(image, angle):
+    """rotate an image while keeping its center and size"""
+    orig_rect = image.get_rect()
+    rot_image = pygame.transform.rotate(image, angle)
+    rot_rect = orig_rect.copy()
+    rot_rect.center = rot_image.get_rect().center
+    rot_image = rot_image.subsurface(rot_rect).copy()
+    return rot_image
+
 class Explosion(pygame.sprite.Sprite):
     """Создание спрайта взрыва."""
     def __init__(self, center, size):
@@ -68,10 +84,11 @@ def draw_object(obj):
     """Рисует на экране произвольный объект."""
     surf=pygame.image.load(obj.sprite)
     surf=pygame.transform.scale(surf, (2*obj.r, 2*obj.r))
-    surf=pygame.transform.rotate(surf, obj.an)
+    surf = rot_center(surf, obj.an)
+    #surf=pygame.transform.rotate(surf, obj.an)
     if obj.orientation == "right":
         surf=pygame.transform.flip(surf,1, False)
-    surf.set_colorkey((255, 255, 255))
+    # surf.set_colorkey((255, 255, 255))
     sc.blit(surf, (obj.x-obj.r, obj.y-obj.r))
 
     
