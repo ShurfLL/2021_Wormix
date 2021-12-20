@@ -12,13 +12,13 @@ menu = MainMenu(sc)
 settings = SettingsMenu(sc)
 pause = PauseMenu(sc)
 
-cat = Player()
-inv = Inventory(sc, [cat.weapon])
-cat.x = 450
-cat.y = 50
-players = [cat]
-weapons = []
+cat1 = Player(450, 50, True)
+cat2 = Player(600, 400) 
+inv = Inventory(sc, [cat1.weapon])
+players = [cat1, cat2]
+weapons = [cat1.weapon, cat2.weapon]
 bullets = []
+water = Death_water()
 game_map = Map()
 game_map.create_map('maps/map1.jpg')
 dt = 0.5
@@ -58,26 +58,38 @@ def game(beginning_flag, playing):
         pause.settings = False
         playing = False
         settings.on = True
-    cat.check_for_ground(game_map.borders)
     for event in events:
         if event.type == pygame.QUIT:
             finished = True
-        if event.type == pygame.KEYDOWN or event.type == pygame.KEYUP:
-            cat.get_move(event)
-            walk.play(0)
-            cat.give_weapon(event)
-        if event.type == pygame.MOUSEBUTTONDOWN:
-            create_boom(*event.pos)
-            pygame.display.update()
-            all_sprites.update()
-        cat.weapon.update(event) 
-    cat.weapon.an +=cat.weapon.wan
-    cat.move(game_map.borders)
-    move_object(cat, dt, game_map.borders)
-    cat.weapon_update()
-    draw_object(cat)
-    draw_object(cat.weapon)
-    draw_health_box(cat)
+        for cat in players:
+            if cat.active:
+                if event.type == pygame.KEYDOWN or event.type == pygame.KEYUP:
+                    cat.get_move(event)
+                    cat.give_weapon(event)
+                if event.type == pygame.KEYDOWN and event.key == pygame.K_SPACE:
+                    bullets.append(cat.weapon.fire_start())
+            cat.weapon.get_target(event)
+            # cat.weapon.update(event) 
+        # if event.type == pygame.MOUSEBUTTONDOWN:
+            # create_boom(*event.pos)
+            # pygame.display.update()
+            # all_sprites.update()
+    for bullet in bullets:
+        draw_object(bullet)
+        move_object(bullet, dt, game_map.borders)
+    for cat in players:
+        cat.weapon.target()
+        cat.check_for_ground(game_map.borders)
+        cat.move(game_map.borders)
+        move_object(cat, dt, game_map.borders)
+        cat.weapon_update()
+        draw_object(cat)
+        draw_object(cat.weapon)
+        draw_health_box(cat)
+        water.kill_player(cat)
+    water.rise_of_water_level()
+    water.draw(sc)
+    
     return beginning_flag, playing
 
 def main_menu(finished, playing):

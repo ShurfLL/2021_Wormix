@@ -82,13 +82,11 @@ all_sprites = pygame.sprite.Group()
 
 def draw_object(obj): 
     """Рисует на экране произвольный объект."""
-    surf=pygame.image.load(obj.sprite)
+    surf=obj.sprite
     surf=pygame.transform.scale(surf, (2*obj.r, 2*obj.r))
     surf = rot_center(surf, obj.an)
-    #surf=pygame.transform.rotate(surf, obj.an)
     if obj.orientation == "right":
         surf=pygame.transform.flip(surf,1, False)
-    # surf.set_colorkey((255, 255, 255))
     sc.blit(surf, (obj.x-obj.r, obj.y-obj.r))
 
     
@@ -113,7 +111,7 @@ def show_boom():
     global all_sprites
     all_sprites.update()
     all_sprites.draw(sc)
-    pygame.display.update()
+    #pygame.display.update()
     
     
 def draw_health_box(obj):

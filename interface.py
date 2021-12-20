@@ -4,7 +4,7 @@ import pygame
 def get_object_pic(weapon):
     """Загружает изображение объекта из модуля objects"""
     if weapon != None:
-        return pygame.image.load(weapon.sprite)
+        return weapon.sprite
     else:
         pass
 

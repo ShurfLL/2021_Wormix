@@ -45,20 +45,11 @@ def calculate_accelerations(obj):
 
 def move_object(body, dt, borders):
     """Перемещает тело."""
-    body.vx += body.ax * dt
-    for i in range(0, int(body.vx * dt + body.ax * dt**2)):
-    """
-    Перемещает тело
-    """
-    body.vx += body.ax * dt   #Обновляем параметры по оси 0х
     for i in range (0, abs(int( body.vx * dt + body.ax * dt**2 ))):
         body.x += sign(body.vx)
         if map_collision(body, borders):
             body.vx, body.vy, body.ax, body.ay = 0, 0, 0, 0
             break
-
-    body.vy += body.ay * dt
-    for i in range(0, int(body.vy * dt + body.ay * dt**2)):
     
     body.vy += body.ay * dt  #Обновляем параметры по оси 0у
     for i in range (0, abs(int( body.vy * dt + body.ay * dt**2 ))):    
