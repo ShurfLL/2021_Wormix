@@ -12,6 +12,7 @@ menu = MainMenu(sc)
 settings = SettingsMenu(sc)
 pause = PauseMenu(sc)
 
+<<<<<<< HEAD
 cat1 = Player(450, 50, True)
 cat2 = Player(600, 400) 
 inv = Inventory(sc, [cat1.weapon])
@@ -19,6 +20,14 @@ players = [cat1, cat2]
 weapons = [cat1.weapon, cat2.weapon]
 bullets = []
 water = Death_water()
+=======
+cat = Player()
+cat.weapon = Bazooka()
+inv = Inventory(sc, [Bazooka(), Uzi()])
+cat.x = 450
+cat.y = 50
+objects=[cat]
+>>>>>>> fd0c659950844a4119c275b1fe9611910465f4b0
 game_map = Map()
 game_map.create_map('maps/map1.jpg')
 dt = 0.5
@@ -37,7 +46,7 @@ def game(beginning_flag, playing):
         fighting.play(-1)
         beginning_flag = True
     game_map.draw_map(sc)
-    inv.draw()
+    
     pause.draw()
     pause.check_events()
     if pause.to_menu:
@@ -61,6 +70,7 @@ def game(beginning_flag, playing):
     for event in events:
         if event.type == pygame.QUIT:
             finished = True
+<<<<<<< HEAD
         for cat in players:
             if cat.active:
                 if event.type == pygame.KEYDOWN or event.type == pygame.KEYUP:
@@ -90,6 +100,20 @@ def game(beginning_flag, playing):
     water.rise_of_water_level()
     water.draw(sc)
     
+=======
+        if event.type == pygame.KEYDOWN or event.type == pygame.KEYUP:
+            cat.get_move(event)
+            walk.play(0)
+        if event.type == pygame.MOUSEBUTTONDOWN:
+            create_boom(*event.pos)
+            pygame.display.update()
+            all_sprites.update()
+    cat.move(game_map.borders)
+    move_object(cat, dt, game_map.borders)
+    draw_object(cat)
+    draw_health_box(cat)
+    inv.draw(cat)
+>>>>>>> fd0c659950844a4119c275b1fe9611910465f4b0
     return beginning_flag, playing
 
 def main_menu(finished, playing):

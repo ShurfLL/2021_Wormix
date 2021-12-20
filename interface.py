@@ -23,24 +23,31 @@ class Inventory():
         self.screen = screen
         self.inventory = weapons
         WIDTH, HEIGHT = screen.get_size()
-        self.x, self.y = WIDTH/3, HEIGHT*5/6
+        self.x, self.y = WIDTH/20, HEIGHT/10
     
     
-    def draw(self):
+    def draw(self, player):
         """Отрисовывает спрайт оружия на экране"""
         dx = 0
         if self.inventory[0] == None:
             return
         else:
             for gun in self.inventory:
-                window = pygame.Surface((70, 50))
-                window.fill((186, 140, 99))
-                window.blit(pygame.transform.scale(get_object_pic(gun), 
-                                                   (70,50)), (0, 0))
-                self.screen.blit(window,  (self.x + dx, self.y))
-                dx += 70
-
-
+                if gun == player.weapon:
+                    window = pygame.Surface((70, 50))
+                    window.fill((0, 0, 200))
+                    window.blit(pygame.transform.scale(get_object_pic(gun), 
+                                                       (70,50)), (0, 0))
+                    self.screen.blit(window,  (self.x + dx, self.y))
+                    dx += 70
+                else:
+                    window = pygame.Surface((70, 50))
+                    window.fill((255, 255, 0))
+                    window.blit(pygame.transform.scale(get_object_pic(gun), 
+                                                       (70,50)), (0, 0))
+                    self.screen.blit(window,  (self.x + dx, self.y))
+                    dx += 70
+                    
 class Button:
     def __init__(self, screen, x, y, image, scale=1):
         
