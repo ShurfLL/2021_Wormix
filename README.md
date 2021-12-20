@@ -2,10 +2,13 @@
 Simple dual game wrote on python using pygame
 ## Description
 ### Game control
-```WASD``` - move
+```right, left arrows``` - move
+```up, down arrows``` - turn the weapon
 ```SPACE``` - shoot
 ```Enter``` - forward jump 
-```R``` - back jump 
+```R``` - back jump
+```1``` - bazooka
+```2``` - uzi
 ## Modules
 * ```main.py``` - general file which describes main cycle, rendering, etc.
 * ```physics.py``` - file which describes objects movements.
