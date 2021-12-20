@@ -13,7 +13,8 @@ settings = SettingsMenu(sc)
 pause = PauseMenu(sc)
 
 cat = Player()
-inv = Inventory(sc, [cat.weapon])
+cat.weapon = Bazooka()
+inv = Inventory(sc, [Bazooka(), Uzi()])
 cat.x = 450
 cat.y = 50
 objects=[cat]
@@ -35,7 +36,7 @@ def game(beginning_flag, playing):
         fighting.play(-1)
         beginning_flag = True
     game_map.draw_map(sc)
-    inv.draw()
+    
     pause.draw()
     pause.check_events()
     if pause.to_menu:
@@ -71,6 +72,7 @@ def game(beginning_flag, playing):
     move_object(cat, dt, game_map.borders)
     draw_object(cat)
     draw_health_box(cat)
+    inv.draw(cat)
     return beginning_flag, playing
 
 def main_menu(finished, playing):
